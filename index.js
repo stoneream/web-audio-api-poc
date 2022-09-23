@@ -16,11 +16,9 @@ buttonStart.onclick = function () {
     // マイク権限のリクエスト
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
         .then((mediaStream) => {
-            console.log("allowed");
             mediaRecorder = new MediaRecorder(mediaStream);
             // データが来たら配列に突っ込んでいく
             mediaRecorder.ondataavailable = function (ev) {
-                console.log("on data availabel");
                 chunks.push(ev.data);
             };
             // 録音を停止したら再生する

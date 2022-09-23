@@ -25,6 +25,9 @@ buttonStart.onclick = function () {
                 const blob = new Blob(chunks);
                 const audioUrl = URL.createObjectURL(blob);
                 const audio = new Audio(audioUrl);
+                // 早回し
+                audio.playbackRate = 4.0;
+
                 audio.play();
             };
             // 録音開始

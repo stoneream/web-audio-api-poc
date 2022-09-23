@@ -1,6 +1,5 @@
 const buttonStart = document.getElementById('button_start');
 const buttonStop = document.getElementById('button_stop');
-// const audio = document.getElementById('recorded_audio');
 
 /**
  * @type {MediaRecorder?}

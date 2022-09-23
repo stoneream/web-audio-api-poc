@@ -16,7 +16,7 @@ buttonStart.onclick = function () {
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
         .then((mediaStream) => {
             mediaRecorder = new MediaRecorder(mediaStream);
-            // データが来たら配列に突っ込んでいく
+            // チャンクデータを突っ込む
             mediaRecorder.ondataavailable = function (ev) {
                 chunks.push(ev.data);
             };

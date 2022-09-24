@@ -35,6 +35,8 @@ window.onload = (event) => {
                 console.log("record stopped!!");
                 const blobUrl = URL.createObjectURL(blob);
                 const player = new Tone.Player(blobUrl);
+                // 処理時間の都合上、ある程度で録音を止めてしまったほうが良いかもしれない
+                // 任意の秒数に変換できるように再生時間から何倍速にするか逆算したほうが良いかもしれない
                 const playbackRate = 3.0; // 何倍速にする？
                 player.playbackRate = playbackRate;
 

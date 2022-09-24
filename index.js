@@ -41,16 +41,19 @@ window.onload = (event) => {
                 player.playbackRate = playbackRate;
 
                 // 音量をめちゃくちゃ上げる
-                // 上げすぎるとスピーカーが壊れるので音声内の最大音量から上げるgainを逆算したい
                 const upGainNode = new Tone.Gain({ gain: 1024, convert: true });
                 // (倍速速度 + 1) * -12 くらいがちょうどいい
                 const pitchDownNode = new Tone.PitchShift({ pitch: -12 * playbackRate + 1.0, wet: 1.0 });
                 const reverbNode = new Tone.Reverb();
+                // スピーカーが壊れないようにリミッターをかませる
+                const limiterNode = new Tone.Limiter(-10.0);
+
 
                 player.connect(upGainNode);
                 upGainNode.connect(pitchDownNode);
                 pitchDownNode.connect(reverbNode);
-                reverbNode.toDestination();
+                reverbNode.connect(limiterNode);
+                limiterNode.toDestination();
 
                 player.autostart = true;
             });

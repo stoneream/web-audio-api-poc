@@ -1,42 +1,24 @@
 const buttonStart = document.getElementById('button_start');
 const buttonStop = document.getElementById('button_stop');
 
-/**
- * @type {MediaRecorder?}
- */
-let mediaRecorder = null;
-
-/**
- * @type {Array<Blob>}
- */
-let chunks = [];
+let mic = null;
 
 buttonStart.onclick = function () {
     // マイク権限のリクエスト
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then((mediaStream) => {
-            mediaRecorder = new MediaRecorder(mediaStream);
-            // チャンクデータを突っ込む
-            mediaRecorder.ondataavailable = function (ev) {
-                chunks.push(ev.data);
-            };
-            // 録音を停止したら再生する
-            mediaRecorder.onstop = function (ev) {
-                const blob = new Blob(chunks);
-                const audioUrl = URL.createObjectURL(blob);
-                const audio = new Audio(audioUrl);
-                // 早回し
-                audio.playbackRate = 4.0;
+    mic = new Tone.UserMedia();
 
-                audio.play();
-            };
-            // 録音開始
-            mediaRecorder.start();
-        });
+    const micFFT = new Tone.FFT();
+
+    mic.connect(micFFT);
+
+    // 録音開始
+    mic.open().then(() => {
+        console.log("recording....");
+    });
 }
 
 buttonStop.onclick = function () {
-    if (mediaRecorder != null) {
-        mediaRecorder.stop();
+    if (mic != null) {
+        mic.close();
     }
 }

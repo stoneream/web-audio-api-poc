@@ -35,11 +35,12 @@ window.onload = (event) => {
                 console.log("record stopped!!");
                 const blobUrl = URL.createObjectURL(blob);
                 const player = new Tone.Player(blobUrl);
-                const rate = 3.0;
-                player.playbackRate = 3.0;
+                const playbackRate = 3.0; // 何倍速にする？
+                player.playbackRate = playbackRate;
 
                 const upGainNode = new Tone.Gain({ gain: 128 * 8, convert: true });
-                const pitchDownNode = new Tone.PitchShift({ pitch: -12 * rate, wet: 1.0 });
+                // (倍速速度 + 1) * -12 くらいがちょうどいい
+                const pitchDownNode = new Tone.PitchShift({ pitch: -12 * playbackRate + 1.0, wet: 1.0 });
                 const reverbNode = new Tone.Reverb();
 
                 player.connect(upGainNode);

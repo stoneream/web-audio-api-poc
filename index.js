@@ -38,7 +38,8 @@ window.onload = (event) => {
                 const playbackRate = 3.0; // 何倍速にする？
                 player.playbackRate = playbackRate;
 
-                const upGainNode = new Tone.Gain({ gain: 128 * 8, convert: true });
+                // 音量をめちゃくちゃ上げる
+                const upGainNode = new Tone.Gain({ gain: 1024, convert: true });
                 // (倍速速度 + 1) * -12 くらいがちょうどいい
                 const pitchDownNode = new Tone.PitchShift({ pitch: -12 * playbackRate + 1.0, wet: 1.0 });
                 const reverbNode = new Tone.Reverb();

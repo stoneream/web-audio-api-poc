@@ -2,6 +2,16 @@ window.onload = (event) => {
 
     const buttonStart = document.getElementById('button_start');
     const buttonStop = document.getElementById('button_stop');
+    const beforeWaceform = WaveSurfer.create({
+        container: '#waveform_before',
+        waveColor: 'violet',
+        progressColor: 'purple'
+    });
+    const afterWaveform = WaveSurfer.create({
+        container: '#waveform_after',
+        waveColor: 'violet',
+        progressColor: 'purple'
+    });
 
     // 音声ファイルは5秒で統一
     const audioLengthSeconds = 5;
@@ -33,6 +43,8 @@ window.onload = (event) => {
             // 録音を止めて音声の再生を開始する
             recorder.stop().then((blob) => {
                 const blobUrl = URL.createObjectURL(blob);
+                beforeWaceform.load(blobUrl);
+
                 const player = new Tone.Player(blobUrl, () => {
                     // 処理時間の都合上、どこかで録音を止めてしまったほうが良いかもしれない
                     // 任意の秒数に変換できるように再生時間から何倍速にするか逆算
@@ -64,10 +76,16 @@ window.onload = (event) => {
                     // 再生が終わってもリバーブがあるので追加で1秒くらい待つ
                     setTimeout(() => {
                         explotionRecorder.stop().then((blob) => {
-                            const url = URL.createObjectURL(blob);
+                            const blobUrl = URL.createObjectURL(blob);
                             const anchor = document.createElement("a");
+
+                            afterWaveform.load(blobUrl);
+                            afterWaveform.on('ready', function () {
+                                // 波形画像の出力
+                                console.log(afterWaveform.exportImage());
+                            });
                             anchor.download = "recording.webm";
-                            anchor.href = url;
+                            anchor.href = blobUrl;
                             anchor.click();
                         });
                     }, 2000);

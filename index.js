@@ -34,7 +34,19 @@ window.onload = (event) => {
             recorder.stop().then((blob) => {
                 console.log("record stopped!!");
                 const blobUrl = URL.createObjectURL(blob);
-                const player = new Tone.Player(blobUrl).toDestination();
+                const player = new Tone.Player(blobUrl);
+                const rate = 3.0;
+                player.playbackRate = 3.0;
+
+                const upGainNode = new Tone.Gain({ gain: 128 * 8, convert: true });
+                const pitchDownNode = new Tone.PitchShift({ pitch: -12 * rate, wet: 1.0 });
+                const reverbNode = new Tone.Reverb();
+
+                player.connect(upGainNode);
+                upGainNode.connect(pitchDownNode);
+                pitchDownNode.connect(reverbNode);
+                reverbNode.toDestination();
+
                 player.autostart = true;
             });
 

@@ -36,8 +36,11 @@ window.onload = (event) => {
                 const player = new Tone.Player(blobUrl, () => {
                     // 処理時間の都合上、どこかで録音を止めてしまったほうが良いかもしれない
                     // 任意の秒数に変換できるように再生時間から何倍速にするか逆算
-                    const playbackRate = audioLengthSeconds / player.buffer.duration;
+                    const playbackRate = player.buffer.duration / audioLengthSeconds;
                     player.playbackRate = playbackRate;
+
+                    // フェードアウトして余韻を感じる
+                    player.fadeOut = new Tone.Time("5s");
 
                     // 音量をめちゃくちゃ上げる
                     const upGainNode = new Tone.Gain({ gain: 1024, convert: true });
@@ -67,7 +70,7 @@ window.onload = (event) => {
                             anchor.href = url;
                             anchor.click();
                         });
-                    }, (audioLengthSeconds + 1) * 1000);
+                    }, 2000);
                 }
             });
 
